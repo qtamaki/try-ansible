@@ -1,0 +1,18 @@
+- hosts: s51
+  remote_user: root
+  tasks:
+    - name: update apt
+      apt: update_cache=yes
+    - name: install apt packages. 1
+      apt: name={{item}} state=present
+      with_items: [build-essential,curl,git]
+    - name: install apt packages. 2
+      apt: name={{item}} state=present
+      with_items: [zlib1g-dev,libssl-dev,libreadline-dev,libyaml-dev,libxml2-dev,libxslt-dev,libmysqlclient-dev,ruby-dev,imagemagick,libmagickcore-dev,libmagickwand-dev,subversion,mysql-client,libmysqlclient-dev]
+    - name: install apt packages. 3
+      apt: name={{item}} state=present
+      with_items: [mysql-server,nginx]
+    - name: rbenv install, clone
+
+
+

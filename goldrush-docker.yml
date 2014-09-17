@@ -1,0 +1,12 @@
+- hosts: s51
+  remote_user: app
+  tasks:
+    - name: mkdir ~/git
+      file: path=~/git state=directory
+    - name: git clone goldrush-docker
+      git: repo=https://github.com/goldrush/goldrush-docker.git 
+           dest=~/git
+    - name: run doecker
+      command: ./init_grdev.sh goldrush
+      arg: chdir=~/git/goldrush-docker
+

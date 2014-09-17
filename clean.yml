@@ -1,0 +1,8 @@
+- hosts: servers
+  remote_user: root
+  tasks:
+    - name: remove nginx
+      apt: name=nginx state=absent
+    - name: remove mysql
+      apt: name=mysql-server state=absent
+

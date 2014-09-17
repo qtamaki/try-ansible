@@ -1,0 +1,13 @@
+- hosts: s51
+  remote_user: root
+  tasks:
+    - name: update apt
+      apt: update_cache=yes
+    - name: install docker.
+      apt: name=docker.io state=present
+    - name: link to docker
+      file: src=/usr/bin/docker.io dest=/usr/local/bin/docker state=link
+    - name: rename in configuration by sed
+      command: sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
+    - name: add docker user group to app
+      user: name=app append=yes groups=docker
