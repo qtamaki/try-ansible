@@ -1,0 +1,45 @@
+- hosts: localhost
+  connection: local
+  vars:
+    path_prefix: ~/ansible
+    dir_state:
+      directory
+    role_name:
+      - common
+      - webservers
+      - appservers
+      - dbservers
+  tasks:
+  - name: create inventries.
+    template: src=hosts.j2 dest={{path_prefix}}/{{item}}.hosts
+    with_items:
+      - production
+      - stage
+      - develop
+
+  - name: create site.yml.
+    template: src=site.yml.j2 dest={{path_prefix}}/site.yml
+
+  - name: create <<role>>.yml.
+    template: src=role.yml.j2 dest={{path_prefix}}/{{item}}.yml
+    when: item | match("[^(common)]")
+    with_items: role_name
+
+  - name: create vars dir.
+    file: path={{path_prefix}}/{{item}} state={{dir_state}}
+    with_items:
+      - group_vars
+      - host_vars
+
+  - name: create roles
+    file: path={{path_prefix}}/roles/{{item[0]}}/{{item[1]}} state={{dir_state}}
+    with_nested:
+      - role_name
+      - ["tasks", "handlers", "vars", "files", "templates", "meta"]
+
+  - name: create roles main.yml
+    file: path={{path_prefix}}/roles/{{item[0]}}/{{item[1]}}/main.yml state=touch
+    with_nested:
+      - role_name
+      - ["tasks", "handlers", "vars", "meta"]
+

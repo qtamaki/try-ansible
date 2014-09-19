@@ -1,0 +1,6 @@
+{% for group in role_name %}
+{% if group != "common" %}
+-include: {{group}}.yml
+{% endif %}
+{% endfor %}
+
