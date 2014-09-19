@@ -37,9 +37,16 @@
       - role_name
       - ["tasks", "handlers", "vars", "files", "templates", "meta"]
 
+  - name: create tasks main.yml
+    template: src=tasks_main.yml.j2 dest={{path_prefix}}/roles/{{item[0]}}/{{item[1]}}/main.yml
+    template: src=ping.yml.j2 dest={{path_prefix}}/roles/{{item[0]}}/{{item[1]}}/ping.yml
+    with_nested:
+      - role_name
+      - ["tasks"]
+
   - name: create roles main.yml
     file: path={{path_prefix}}/roles/{{item[0]}}/{{item[1]}}/main.yml state=touch
     with_nested:
       - role_name
-      - ["tasks", "handlers", "vars", "meta"]
+      - ["handlers", "vars", "meta"]
 

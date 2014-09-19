@@ -1,5 +1,0 @@
-- hosts: role_name
-  roles:
-    - common
-    - role_name
-
